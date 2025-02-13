@@ -37,3 +37,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     # )
     
     
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['firstName',
+                  'lastName',
+                  'email',
+                  'mobile',
+                  ]
+        extra_kwargs = {
+            "email": {'read_only': True},
+        }

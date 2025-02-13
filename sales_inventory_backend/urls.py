@@ -3,6 +3,7 @@ from django.urls import path, include
 
 api_urlspatterns = [
     path('',include("users.urls")),
+    path('',include("categories.urls")),
 ]
 
 urlpatterns = [
