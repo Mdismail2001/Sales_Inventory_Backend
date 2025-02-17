@@ -75,16 +75,37 @@ class CategoryUpdateView(APIView):
 class CategoryDeleteView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def delete(self, request,pk):
+    def delete(self, request):
+        cate_id = request.data.get('id')
+
         
         try:
-            category = Category.objects.get(id=pk, user_id=request.user.id)
+            category = Category.objects.get(id=cate_id, user_id=request.user.id)
             category.delete()
             return Response({
                 "status": "success",
                 "message": "Category deleted successfully"
             }, status=status.HTTP_200_OK
             )
+        except Category.DoesNotExist:
+            return Response({
+                "status": "error",
+                "message": "Category not found"
+            }, status=status.HTTP_404_NOT_FOUND
+            )
+            
+            
+            
+class CategoryDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, ):
+        cate_id = request.data.get('id')
+
+        try:
+            category = Category.objects.get(id=cate_id, user_id=request.user.id)
+            serializer = CategorySerializer(category)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
             return Response({
                 "status": "error",
